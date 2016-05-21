@@ -126,7 +126,8 @@ object JobUtils {
               nStart.toString(DateTimeFormat.fullDate)))
           Some(new ScheduleStream(Iso8601Expressions.create(rec, nStart, per), job.name, job.scheduleTimeZone))
         } else if (rec < skip) {
-          log.warning("Filtered job as it is no longer valid.")
+          log.warning("""Job %s will not be scheduled: the start time is in the past, and sufficient time has passed since the start |
+          time for there to be no more runs based on the interval and repetition.""".format(job.name).stripMargin.replaceAll("\n", " "))
           None
         } else {
           val nRec = rec - skip

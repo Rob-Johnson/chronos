@@ -20,7 +20,7 @@ import scala.annotation.tailrec
 import scala.collection.mutable.ListBuffer
 
 /**
- * Constructs concrete tasks given a  list of schedules and a global scheduleHorizon.
+ * Constructs concrete tasks given a list of schedules and a global scheduleHorizon.
  * The schedule horizon represents the advance-time the schedule is constructed.
  *
  * A lot of the methods in this class are broken into small pieces to allow for better unit testing.
@@ -488,6 +488,7 @@ class JobScheduler @Inject()(val scheduleHorizon: Period,
         log.info("Size of streams: %d".format(streams.size))
         streams = iteration(dateSupplier(), streams)
       }
+      log.info("Job Scheduler thread going to sleep for %d (the configured schedule horizon).".format(scheduleHorizon.toStandardDuration.getMillis))
       Thread.sleep(scheduleHorizon.toStandardDuration.getMillis)
       //TODO(FL): This can be inaccurate if the horizon >= 1D on daylight savings day and when leap seconds are introduced.
     }
